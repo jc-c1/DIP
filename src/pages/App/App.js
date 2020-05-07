@@ -5,8 +5,10 @@ import SignupPage from '../SignupPage/SignupPage';
 import LoginPage from '../LoginPage/LoginPage';
 import userService from '../../utils/userService';
 import tokenService from '../../utils/tokenService';
-import GamePage from '../../pages/GamePage/GamePage';
+import scoresService from '../../utils/scoresService';
 
+import GamePage from '../../pages/GamePage/GamePage';
+import HighScoresPage from '../HighScoresPage/HighScoresPage';
 
 
 class App extends Component {
@@ -14,7 +16,8 @@ class App extends Component {
     super();
     this.state = {
       // Initialize user if there's a token, otherwise null
-      user: userService.getUser()
+      user: userService.getUser(),
+      scores: []
     };
   }
 
@@ -26,7 +29,10 @@ class App extends Component {
   handleSignupOrLogin = () => {
     this.setState({user: userService.getUser()});
   }
-
+  
+  handleUpdateScores = (scores) => {
+    this.setState({ scores });
+  }
   /*--- Lifecycle Methods ---*/
 
   render() {
@@ -53,6 +59,15 @@ class App extends Component {
               history={history}
               handleSignupOrLogin={this.handleSignupOrLogin}
             />
+          }/>
+          <Route exact path='/high-scores' render={() => 
+            userService.getUser() ? 
+              <HighScoresPage
+                scores={this.state.scores}
+                handleUpdateScores={this.handleUpdateScores}
+              />
+            :
+              <Redirect to='/login'/>
           }/>
         </Switch>
       </div>
