@@ -32,15 +32,18 @@ async function highScores(req, res) {
 
 async function update(req, res) {
   try {
-    await Score.findById(req.body.eventId, (err, evtFound) => {
+    await (Score.findById(req.body.eventId,  async (err, evtFound) => {
       evtFound.guest.forEach((i) => {
         if (i.email == req.user.email) {
           i.status = req.body.status;
         }
       });
-      evtFound.save();
-    });
-
+      
+      await evtFound.save()
+      
+       highScores(req, res)
+    }))
+    
     // Use the highScores action to return the list
   } catch (err) {
     res.json({ err });

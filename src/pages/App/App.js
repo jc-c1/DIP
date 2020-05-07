@@ -83,6 +83,7 @@ class App extends Component {
             userService.getUser() ? 
               <HighScoresPage
                 scores={this.state.scores}
+                user={this.state.user}
                 handleUpdateScores={this.handleUpdateScores}
               />
           
