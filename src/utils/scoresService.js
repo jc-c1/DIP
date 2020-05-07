@@ -9,6 +9,7 @@ export default {
 };
 
 function index() {
+  console.log("token: " + tokenService.getToken());
   const options = {
     method: 'GET',
     headers: {

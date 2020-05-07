@@ -8,17 +8,28 @@ module.exports = {
 
 async function create(req, res) {
   console.log('user: ', req.user)
+  console.log(req.body)
+  const emails = req.body.guest.split(',')
+  req.body.guest = emails.map(
+    (i)=>{
+      return(
+      { 'email' : i.trim(), 
+        'status' : ""})
+    }
+    )
   try {
     await Score.create(req.body);
     // Use the highScores action to return the list
-    highScores(req, res);
+  
   } catch (err) {
     res.json({err});
   }
 }
 
 async function highScores(req, res) {
-  const scores = await Score.find({})
+  console.log(req.user)
+  const scores = await Score.find({'guest.email':req.user.email})
+  
     .sort({numGuesses: 1, seconds: 1})
     // Default to a limit of 20 high scores
     // if not specified in a query string
@@ -33,7 +44,8 @@ async function update(req, res) {
   console.log('user: ', req.user)
 
   try {
-    await Score.findByIdAndUpdate(req.body.eventId, {"status" : req.body.status})
+    await Score.findById(req.body.eventId, 
+      (err, evtFound) => {evtFound.guest.forEach((i)=>{if (i.email = req.user.email){i.status = req.body.status}})})
 
     // Use the highScores action to return the list
     highScores(req, res);
@@ -41,7 +53,4 @@ async function update(req, res) {
     res.json({err});
   }
 }
-
-
-
 

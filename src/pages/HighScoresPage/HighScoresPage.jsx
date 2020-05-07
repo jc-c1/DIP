@@ -42,6 +42,7 @@ class HighScoresPage extends Component {
     ));
 
     return (
+     
       <div className={styles.HighScores}>
         <header className="header-footer">High Scores</header>
         {this.props.scores.length ? (

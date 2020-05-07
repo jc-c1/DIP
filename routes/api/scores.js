@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const scoresCtrl = require('../../controllers/scores');
 
-router.get('/', scoresCtrl.highScores);
 
 /*---------- Protected Routes ----------*/
 // Process the token for only the routes below
 router.use(require('../../config/auth'));
+router.get('/', checkAuth, scoresCtrl.highScores);
 router.post('/', checkAuth, scoresCtrl.create);
 router.put('/', checkAuth, scoresCtrl.update);
 

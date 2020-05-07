@@ -6,10 +6,10 @@ import LoginPage from '../LoginPage/LoginPage';
 import userService from '../../utils/userService';
 import tokenService from '../../utils/tokenService';
 import scoresService from '../../utils/scoresService';
+import CreateScorePage from '../CreateScorePage/CreateScorePage';
 
-import GamePage from '../../pages/GamePage/GamePage';
 import HighScoresPage from '../HighScoresPage/HighScoresPage';
-
+import NavBar from '../../components/NavBar/NavBar';
 
 class App extends Component {
   constructor() {
@@ -30,9 +30,16 @@ class App extends Component {
     this.setState({user: userService.getUser()});
   }
   
+  handleCreateScores = (scores) => {
+   
+  }
+
+
   handleUpdateScores = (scores) => {
     this.setState({ scores });
   }
+
+
   /*--- Lifecycle Methods ---*/
 
   render() {
@@ -40,14 +47,12 @@ class App extends Component {
     return (
       <div>
         <header className='header-footer'> D I P </header>
-        
+        <NavBar
+      
+        handleLogout={this.handleLogout}
+        user={this.state.user}
+      />
         <Switch>
-        <Route exact path='/' render={() =>
-            <GamePage
-              handleLogout={this.handleLogout}
-              user={this.state.user}
-          />
-          }/>
           <Route exact path='/signup' render={({ history }) => 
             <SignupPage
               history={history}
@@ -60,12 +65,27 @@ class App extends Component {
               handleSignupOrLogin={this.handleSignupOrLogin}
             />
           }/>
-          <Route exact path='/high-scores' render={() => 
+
+
+           <Route exact path='/create' render={({ history }) => 
+           userService.getUser() ? 
+            <CreateScorePage
+              history={history}
+              handleCreateScore={this.handleCreateScores}
+            />
+            :
+            <Redirect to='/login'/>
+          }/>
+
+
+
+          <Route exact path='/' render={() => 
             userService.getUser() ? 
               <HighScoresPage
                 scores={this.state.scores}
                 handleUpdateScores={this.handleUpdateScores}
               />
+          
             :
               <Redirect to='/login'/>
           }/>
