@@ -6,8 +6,30 @@
 
 .NavBar-link {
   margin: 0 10px;
+ 
+
 }
 
 .NavBar-welcome {
   color: grey;
+ 
+  
+}
+.col {
+  display: inline-block
+}
+
+
+#DIP {
+  font-size: 40px;
+}
+
+
+#link {
+  float: right;
+  
+}
+
+.container {
+  width:750px;
 }

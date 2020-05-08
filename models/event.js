@@ -10,14 +10,21 @@ const guestSchema = new Schema(
     timestamps: true
   }
 );
-
-
+// const hostSchema = new Schema(
+//   {
+//     email: String,
+//   },
+//   {
+//     timestamps: true
+//   }
+// );
 
 const eventSchema = new Schema({
   eventTitles: String,
   dates: Date,
   eventInfos: String, 
   comments: String,
+  // host: [hostSchema],
   guest: [guestSchema]
 }, {
   timestamps: true

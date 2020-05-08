@@ -46,7 +46,7 @@ class App extends Component {
     
     return (
       <div>
-        <header className='header-footer'> D I P </header>
+        
         <NavBar
       
         handleLogout={this.handleLogout}

@@ -158,12 +158,16 @@ class AllEventsPage extends Component {
       );
     });
 
-    
+   
 
 
     return (
       <div className={styles.allEvents}>
-        <header className="header-footer">All Events <Link to='/Create'>+</Link></header>
+
+        <table className={`${styles.table} table `}>
+     
+              <tr><th ><Link style={{'float': "right", "font-size":"20px", "font-weight":"400", "color":"black"}} to='/Create'>Add Event</Link></th></tr>
+          </table>
         {this.props.events.length ? (
           <table className={`${styles.table} table text-info`}>
             <thead>
