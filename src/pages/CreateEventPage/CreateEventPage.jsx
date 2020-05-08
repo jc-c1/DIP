@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ScoreForm from '../../components/ScoreForm/ScoreForm';
-import './CreateScorePage.css';
+import EventForm from '../../components/EventForm/EventForm';
+import './CreateEventPage.css';
 
-class CreateScorePage extends Component {
+class CreateEventPage extends Component {
   constructor(props) {
     super(props);
     this.state = {message: ''}
@@ -15,11 +15,11 @@ class CreateScorePage extends Component {
   render() {
     return (
       <div className='SignupPage'>
-        <ScoreForm {...this.props} updateMessage={this.updateMessage} />
+        <EventForm {...this.props} updateMessage={this.updateMessage} />
         <p>{this.state.message}</p>
       </div>
     );
   }
 }
 
-export default CreateScorePage;
+export default CreateEventPage;

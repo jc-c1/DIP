@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import scoresService from '../../utils/scoresService';
+import eventsService from '../../utils/eventsService';
 
 
 
-class ScoreForm extends Component {
+class EventForm extends Component {
 
   state = {
-    initials: "",
-    numGuesses: "",
-    seconds: "", 
+    eventTitles: "",
+    dates: "",
+    eventInfos: "", 
+    comments: "",
     guest: "",
   };
 
@@ -24,7 +25,7 @@ class ScoreForm extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await scoresService.create(this.state);
+      await eventsService.create(this.state);
       // Let <App> know a user has signed up!
 
       // Successfully signed up - show GamePage
@@ -38,24 +39,29 @@ class ScoreForm extends Component {
 
 
 
-  render() {
+  render() { 
     return (
       <div>
         <header className="header-footer">Sign Up</header>
         <form className="form-horizontal" onSubmit={this.handleSubmit} >
           <div className="form-group">
             <div className="col-sm-12">
-              <input type="text" className="form-control" placeholder="initials" value={this.state.initials} name="initials" onChange={this.handleChange} />
+              <input type="text" className="form-control" placeholder="eventTitles" value={this.state.eventTitles} name="eventTitles" onChange={this.handleChange} />
             </div>
           </div>
           <div className="form-group">
             <div className="col-sm-12">
-              <input type="text" className="form-control" placeholder="numGuesses" value={this.state.numGuesses} name="numGuesses" onChange={this.handleChange} />
+              <input type="text" className="form-control" placeholder="dates" value={this.state.dates} name="dates" onChange={this.handleChange} />
             </div>
           </div>
           <div className="form-group">
             <div className="col-sm-12">
-              <input type="text" className="form-control" placeholder="seconds" value={this.state.seconds} name="seconds" onChange={this.handleChange} />
+              <input type="text" className="form-control" placeholder="eventInfos" value={this.state.eventInfos} name="eventInfos" onChange={this.handleChange} />
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="col-sm-12">
+              <input type="text" className="form-control" placeholder="comments" value={this.state.comments} name="comments" onChange={this.handleChange} />
             </div>
           </div>
           <div className="form-group">
@@ -65,7 +71,7 @@ class ScoreForm extends Component {
           </div>
           <div className="form-group">
             <div className="col-sm-12 text-center">
-              <button className="btn btn-default" >Create Score</button>&nbsp;&nbsp;
+              <button className="btn btn-default" >Create Event</button>&nbsp;&nbsp;
               <Link to='/'>Cancel</Link>
             </div>
           </div>
@@ -75,4 +81,4 @@ class ScoreForm extends Component {
   }
 }
 
-export default ScoreForm;
+export default EventForm;

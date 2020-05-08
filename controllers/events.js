@@ -1,8 +1,8 @@
-var Score = require("../models/score");
+var Event = require("../models/event");
 
 module.exports = {
   create,
-  highScores,
+  allEvents,
   update,
 };
 
@@ -12,27 +12,28 @@ async function create(req, res) {
     return { email: i.trim(), status: "" };
   });
   try {
-    await Score.create(req.body);
-    // Use the highScores action to return the list
+    await Event.create(req.body);
+    // Use the allEvents action to return the list
+    allEvents(req, res);
   } catch (err) {
     res.json({ err });
   }
 }
 
-async function highScores(req, res) {
-  const scores = await Score.find({ "guest.email": req.user.email })
+async function allEvents(req, res) {
+  const events = await Event.find({ "guest.email": req.user.email })
 
-    .sort({ numGuesses: 1, seconds: 1 })
-    // Default to a limit of 20 high scores
+    .sort({ dates: 1 })
+    // Default to a limit of 20 events
     // if not specified in a query string
     .limit(req.query.limit || 20);
 
-  res.json(scores);
+  res.json(events);
 }
 
 async function update(req, res) {
   try {
-    await Score.findById(req.body.eventId, async (err, evtFound) => {
+    await Event.findById(req.body.eventId, async (err, evtFound) => {
       evtFound.guest.forEach((i) => {
         if (i.email == req.user.email) {
           i.status = req.body.status;
@@ -41,10 +42,10 @@ async function update(req, res) {
 
       await evtFound.save();
 
-      highScores(req, res);
+      allEvents(req, res);
     });
 
-    // Use the highScores action to return the list
+    // Use the allEvents action to return the list
   } catch (err) {
     res.json({ err });
   }

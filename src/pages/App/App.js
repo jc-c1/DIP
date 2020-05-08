@@ -5,10 +5,10 @@ import SignupPage from '../SignupPage/SignupPage';
 import LoginPage from '../LoginPage/LoginPage';
 import userService from '../../utils/userService';
 import tokenService from '../../utils/tokenService';
-import scoresService from '../../utils/scoresService';
-import CreateScorePage from '../CreateScorePage/CreateScorePage';
+import eventsService from '../../utils/eventsService';
+import CreateEventPage from '../CreateEventPage/CreateEventPage';
 
-import HighScoresPage from '../HighScoresPage/HighScoresPage';
+import AllEventsPage from '../AllEventsPage/AllEventsPage';
 import NavBar from '../../components/NavBar/NavBar';
 
 class App extends Component {
@@ -17,7 +17,7 @@ class App extends Component {
     this.state = {
       // Initialize user if there's a token, otherwise null
       user: userService.getUser(),
-      scores: []
+      events: []
     };
   }
 
@@ -30,13 +30,13 @@ class App extends Component {
     this.setState({user: userService.getUser()});
   }
   
-  handleCreateScores = (scores) => {
+  handleCreateEvents = (events) => {
    
   }
 
 
-  handleUpdateScores = (scores) => {
-    this.setState({ scores });
+  handleUpdateEvents = (events) => {
+    this.setState({ events });
   }
 
 
@@ -69,9 +69,9 @@ class App extends Component {
 
            <Route exact path='/create' render={({ history }) => 
            userService.getUser() ? 
-            <CreateScorePage
+            <CreateEventPage
               history={history}
-              handleCreateScore={this.handleCreateScores}
+              handleCreateEvent={this.handleCreateEvents}
             />
             :
             <Redirect to='/login'/>
@@ -81,10 +81,10 @@ class App extends Component {
 
           <Route exact path='/' render={() => 
             userService.getUser() ? 
-              <HighScoresPage
-                scores={this.state.scores}
+              <AllEventsPage
+                events={this.state.events}
                 user={this.state.user}
-                handleUpdateScores={this.handleUpdateScores}
+                handleUpdateEvents={this.handleUpdateEvents}
               />
           
             :

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import styles from "./HighScoresPage.module.css";
-import scoresService from "../../utils/scoresService";
+import styles from "./AllEventsPage.module.css";
+import eventsService from "../../utils/eventsService";
 
-class HighScoresPage extends Component {
+class AllEventsPage extends Component {
   async componentDidMount() {
-    const scores = await scoresService.index();
-    this.props.handleUpdateScores(scores);
-    console.log(this.props.scores)
+    const events = await eventsService.index();
+    this.props.handleUpdateEvents(events);
+    console.log(this.props.events)
   }
 
   handleClick = (eventId, status) => {
@@ -16,19 +16,21 @@ class HighScoresPage extends Component {
       status,
     };
     return () => {
-      scoresService.update(body).then((scores) => {
-        this.props.handleUpdateScores(scores);
+      eventsService.update(body).then((events) => {
+        this.props.handleUpdateEvents(events);
       });
     };
   };
 
   render() {
-    const scoreRows = this.props.scores.map((score, idx) => {
-      const userScoreStatus = score.guest.find(
+    const eventRows = this.props.events.map((event, idx) => {
+      
+
+      const userEventStatus = event.guest.find(
         (i) => i.email == this.props.user.email
       ).status;
       
-      const totalTallied = score.guest.reduce(
+      const totalTallied = event.guest.reduce(
         (acc, cur)=> {
           if (cur.status == "Dip"){
             acc.Dip += 1
@@ -46,17 +48,17 @@ class HighScoresPage extends Component {
 
 
       const dipstatus = () => {
-        if (totalTallied.Dip > (score.guest.length/2)){
+        if (totalTallied.Dip > (event.guest.length/2)){
           return "red"
         }
-        else if (totalTallied.Chip > (score.guest.length/2)){
+        else if (totalTallied.Chip > (event.guest.length/2)){
           return "green"
         }
         else { return "yellow"}
       }
 
       const disableButton = () => {
-        if (userScoreStatus == "Dip") {
+        if (userEventStatus == "Dip") {
           return (
             <td>
               <button className="btn btn-default" disabled>
@@ -64,24 +66,24 @@ class HighScoresPage extends Component {
               </button>
               <button
                 className="btn btn-default"
-                onClick={this.handleClick(score._id, "Chip")}
+                onClick={this.handleClick(event._id, "Chip")}
               >
                 Chip
               </button>
               <button
                 className="btn btn-default"
-                onClick={this.handleClick(score._id, "Salsa")}
+                onClick={this.handleClick(event._id, "Salsa")}
               >
                 Salsa
               </button>
             </td>
           );
-        } else if (userScoreStatus == "Chip") {
+        } else if (userEventStatus == "Chip") {
           return (
             <td>
               <button
                 className="btn btn-default"
-                onClick={this.handleClick(score._id, "Dip")}
+                onClick={this.handleClick(event._id, "Dip")}
               >
                 Dip
               </button>
@@ -90,24 +92,24 @@ class HighScoresPage extends Component {
               </button>
               <button
                 className="btn btn-default"
-                onClick={this.handleClick(score._id, "Salsa")}
+                onClick={this.handleClick(event._id, "Salsa")}
               >
                 Salsa
               </button>
             </td>
           );
-        } else if (userScoreStatus == "Salsa") {
+        } else if (userEventStatus == "Salsa") {
           return (
             <td>
               <button
                 className="btn btn-default"
-                onClick={this.handleClick(score._id, "Dip")}
+                onClick={this.handleClick(event._id, "Dip")}
               >
                 Dip
               </button>
               <button
                 className="btn btn-default"
-                onClick={this.handleClick(score._id, "Chip")}
+                onClick={this.handleClick(event._id, "Chip")}
               >
                 Chip
               </button>
@@ -121,19 +123,19 @@ class HighScoresPage extends Component {
             <td>
               <button
                 className="btn btn-default"
-                onClick={this.handleClick(score._id, "Dip")}
+                onClick={this.handleClick(event._id, "Dip")}
               >
                 Dip
               </button>
               <button
                 className="btn btn-default"
-                onClick={this.handleClick(score._id, "Chip")}
+                onClick={this.handleClick(event._id, "Chip")}
               >
                 Chip
               </button>
               <button
                 className="btn btn-default"
-                onClick={this.handleClick(score._id, "Salsa")}
+                onClick={this.handleClick(event._id, "Salsa")}
               >
                 Salsa
               </button>
@@ -147,8 +149,8 @@ class HighScoresPage extends Component {
           <td>
             <span className="badge">{idx + 1}</span>
           </td>
-          <td>{score.initials}</td>
-          <td>{score.numGuesses}</td>
+          <td>{event.eventTitles}</td>
+          <td>{event.dates}</td>
 
           {disableButton()}
         </tr>
@@ -159,14 +161,14 @@ class HighScoresPage extends Component {
 
 
     return (
-      <div className={styles.HighScores}>
-        <header className="header-footer">High Scores <Link to='/Create'>+</Link></header>
-        {this.props.scores.length ? (
+      <div className={styles.allEvents}>
+        <header className="header-footer">All Events <Link to='/Create'>+</Link></header>
+        {this.props.events.length ? (
           <table className={`${styles.table} table text-info`}>
-            <tbody>{scoreRows}</tbody>
+            <tbody>{eventRows}</tbody>
           </table>
         ) : (
-          <h4 className="text-info">No High Scores Yet</h4>
+          <h4 className="text-info">No Events Yet</h4>
         )}
         
       </div>
@@ -174,4 +176,4 @@ class HighScoresPage extends Component {
   }
 }
 
-export default HighScoresPage;
+export default AllEventsPage;

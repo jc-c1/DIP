@@ -1,6 +1,6 @@
 import tokenService from './tokenService';
 
-const BASE_URL = '/api/scores/';
+const BASE_URL = '/api/events/';
 
 export default {
   index,
@@ -18,7 +18,7 @@ function index() {
   return fetch(BASE_URL, options).then(res => res.json());
 }
 
-function create(score) {
+function create(event) {
   const options = {
     method: 'POST',
     headers: {
@@ -26,7 +26,7 @@ function create(score) {
       // Add this header - don't forget the space after Bearer
       'Authorization': 'Bearer ' + tokenService.getToken()
     },
-    body: JSON.stringify(score)
+    body: JSON.stringify(event)
   };
   return fetch(BASE_URL, options).then(res => res.json());
 }
