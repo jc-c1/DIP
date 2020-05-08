@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import eventsService from '../../utils/eventsService';
-
+import styles from "./EventForm.module.css";
 
 
 class EventForm extends Component {
@@ -41,32 +41,37 @@ class EventForm extends Component {
 
   render() { 
     return (
-      <div>
-        <header className="header-footer">Sign Up</header>
+      <div className={`${styles.table} table text-info`}>
+        <header className="header-footer">New Event!</header>
         <form className="form-horizontal" onSubmit={this.handleSubmit} >
           <div className="form-group">
             <div className="col-sm-12">
-              <input type="text" className="form-control" placeholder="eventTitles" value={this.state.eventTitles} name="eventTitles" onChange={this.handleChange} />
+              <span>Event Name</span>
+              <input type="text" className="form-control"  value={this.state.eventTitles} name="eventTitles" onChange={this.handleChange} />
             </div>
           </div>
           <div className="form-group">
             <div className="col-sm-12">
-              <input type="text" className="form-control" placeholder="dates" value={this.state.dates} name="dates" onChange={this.handleChange} />
+            <span>Date</span>
+              <input type="date" className="form-control" value={this.state.dates} name="dates" onChange={this.handleChange} />
             </div>
           </div>
           <div className="form-group">
             <div className="col-sm-12">
-              <input type="text" className="form-control" placeholder="eventInfos" value={this.state.eventInfos} name="eventInfos" onChange={this.handleChange} />
+            <span>Link for more details</span>
+              <input type="text" class="form-control"  className="form-control" placeholder="http://www.google.com" value={this.state.eventInfos} name="eventInfos" onChange={this.handleChange} />
             </div>
           </div>
           <div className="form-group">
             <div className="col-sm-12">
-              <input type="text" className="form-control" placeholder="comments" value={this.state.comments} name="comments" onChange={this.handleChange} />
+            <span>Comment</span>
+              <textarea class="form-control"  className="form-control" value={this.state.comments} name="comments" onChange={this.handleChange} />
             </div>
           </div>
           <div className="form-group">
             <div className="col-sm-12">
-              <input type="text" className="form-control" placeholder="guest" value={this.state.guest} name="guest" onChange={this.handleChange} />
+            <span>Guest Emails</span>
+              <textarea  class="form-control"  placeholder="john@gmail.com, jane@gmail.com" value={this.state.guest} name="guest" onChange={this.handleChange} />
             </div>
           </div>
           <div className="form-group">

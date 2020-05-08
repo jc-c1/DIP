@@ -28,6 +28,8 @@ async function allEvents(req, res) {
     // if not specified in a query string
     .limit(req.query.limit || 20);
 
+    
+
   res.json(events);
 }
 

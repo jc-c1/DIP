@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styles from "./AllEventsPage.module.css";
 import eventsService from "../../utils/eventsService";
+import Moment from 'react-moment';
+
 
 class AllEventsPage extends Component {
   async componentDidMount() {
@@ -25,6 +27,7 @@ class AllEventsPage extends Component {
   render() {
     const eventRows = this.props.events.map((event, idx) => {
       
+      const dateToFormat = event.dates
 
       const userEventStatus = event.guest.find(
         (i) => i.email == this.props.user.email
@@ -145,14 +148,12 @@ class AllEventsPage extends Component {
       };
 
       return (
-        <tr key={idx} style={{"background-color":dipstatus()}}>
-          <td>
-            <span className="badge">{idx + 1}</span>
-          </td>
-          <td>{event.eventTitles}</td>
-          <td>{event.dates}</td>
-
-          {disableButton()}
+        <tr style={{"background-color":dipstatus()}}>
+         <td><Moment format='MMM. DD, YYYY'>{dateToFormat}</Moment></td>
+          <td><a href={event.eventInfos} target="_blank">{event.eventTitles}</a></td>
+          
+          <td>{event.comments}</td>
+          <td>{disableButton()}</td>
         </tr>
       );
     });
@@ -165,6 +166,9 @@ class AllEventsPage extends Component {
         <header className="header-footer">All Events <Link to='/Create'>+</Link></header>
         {this.props.events.length ? (
           <table className={`${styles.table} table text-info`}>
+            <thead>
+              <tr><th width={80}>Date</th><th width={130}>Event</th><th width={150}>Comment</th><th width={100}>Status</th></tr>
+            </thead>
             <tbody>{eventRows}</tbody>
           </table>
         ) : (
