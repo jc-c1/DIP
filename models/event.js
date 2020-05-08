@@ -25,10 +25,5 @@ const eventSchema = new Schema(
   }
 );
 
-// Ensure that eventTitles are uppercase & not longer than 3 characters
-// eventSchema.pre('save', function(next) {
-//   this.eventTitles = this.eventTitles.substr(0, 3).toUpperCase();
-//   next();
-// });
 
 module.exports = mongoose.model("Event", eventSchema);
