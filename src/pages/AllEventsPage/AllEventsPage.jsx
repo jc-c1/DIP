@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styles from "./AllEventsPage.module.css";
 import eventsService from "../../utils/eventsService";
-import Moment from 'react-moment';
-
+import Moment from "react-moment";
+import DeleteButton from "../../components/DeleteButton/DeleteButton";
 
 class AllEventsPage extends Component {
   async componentDidMount() {
     const events = await eventsService.index();
     this.props.handleUpdateEvents(events);
-    console.log(this.props.events)
+    console.log(this.props.events);
   }
 
   handleClick = (eventId, status) => {
@@ -26,39 +26,39 @@ class AllEventsPage extends Component {
 
   render() {
     const eventRows = this.props.events.map((event, idx) => {
-      
-      const dateToFormat = event.dates
+      const isAdmin = !!event.host?.find(
+        (email) => email === this.props.user.email
+      );
+      const dateToFormat = event.dates;
 
       const userEventStatus = event.guest.find(
         (i) => i.email == this.props.user.email
       ).status;
-      
+
       const totalTallied = event.guest.reduce(
-        (acc, cur)=> {
-          if (cur.status == "Dip"){
-            acc.Dip += 1
+        (acc, cur) => {
+          if (cur.status == "Dip") {
+            acc.Dip += 1;
+          } else if (cur.status == "Chip") {
+            acc.Chip += 1;
+          } else {
+            acc.Salsa += 1;
           }
-          else if (cur.status == "Chip")
-          {
-            acc.Chip += 1
-          }
-          else {acc.Salsa += 1}
 
-          return acc
-
-        }, {"Dip":0, "Chip":0, "Salsa":0}
-      )
-
+          return acc;
+        },
+        { Dip: 0, Chip: 0, Salsa: 0 }
+      );
 
       const dipstatus = () => {
-        if (totalTallied.Dip > (event.guest.length/2)){
-          return "red"
+        if (totalTallied.Dip > event.guest.length / 2) {
+          return "red";
+        } else if (totalTallied.Chip > event.guest.length / 2) {
+          return "green";
+        } else {
+          return "yellow";
         }
-        else if (totalTallied.Chip > (event.guest.length/2)){
-          return "green"
-        }
-        else { return "yellow"}
-      }
+      };
 
       const disableButton = () => {
         if (userEventStatus == "Dip") {
@@ -148,37 +148,65 @@ class AllEventsPage extends Component {
       };
 
       return (
-        <tr style={{"background-color":dipstatus()}}>
-         <td><Moment format='MMM. DD, YYYY'>{dateToFormat}</Moment></td>
-          <td><a href={event.eventInfos} target="_blank">{event.eventTitles}</a></td>
-          
+        <tr style={{ "background-color": dipstatus() }}>
+          <td>
+            <Moment format="MMM. DD, YYYY">{dateToFormat}</Moment>
+          </td>
+          <td>
+            <a href={event.eventInfos} target="_blank">
+              {event.eventTitles}
+            </a>
+          </td>
+
           <td>{event.comments}</td>
-          <td>{disableButton()}</td>
+
+          <td>
+            {disableButton()}
+            {isAdmin && (
+              <DeleteButton
+                handleUpdateEvents={this.props.handleUpdateEvents}
+                id={event._id}
+              />
+            )}
+          </td>
         </tr>
       );
     });
 
-   
-
-
     return (
       <div className={styles.allEvents}>
-
         <table className={`${styles.table} table `}>
-     
-              <tr><th ><Link style={{'float': "right", "font-size":"20px", "font-weight":"400", "color":"black"}} to='/Create'>Add Event</Link></th></tr>
-          </table>
+          <tr>
+            <th>
+              <Link
+                style={{
+                  float: "right",
+                  "font-size": "20px",
+                  "font-weight": "400",
+                  color: "black",
+                }}
+                to="/Create"
+              >
+                Add Event
+              </Link>
+            </th>
+          </tr>
+        </table>
         {this.props.events.length ? (
           <table className={`${styles.table} table text-info`}>
             <thead>
-              <tr><th width={80}>Date</th><th width={130}>Event</th><th width={150}>Comment</th><th width={100}>Status</th></tr>
+              <tr>
+                <th width={80}>Date</th>
+                <th width={130}>Event</th>
+                <th width={150}>Comment</th>
+                <th width={100}>Status</th>
+              </tr>
             </thead>
             <tbody>{eventRows}</tbody>
           </table>
         ) : (
           <h4 className="text-info">No Events Yet</h4>
         )}
-        
       </div>
     );
   }

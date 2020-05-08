@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const guestSchema = new Schema(
@@ -7,28 +7,23 @@ const guestSchema = new Schema(
     status: String,
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
-// const hostSchema = new Schema(
-//   {
-//     email: String,
-//   },
-//   {
-//     timestamps: true
-//   }
-// );
 
-const eventSchema = new Schema({
-  eventTitles: String,
-  dates: Date,
-  eventInfos: String, 
-  comments: String,
-  // host: [hostSchema],
-  guest: [guestSchema]
-}, {
-  timestamps: true
-});
+const eventSchema = new Schema(
+  {
+    eventTitles: String,
+    dates: Date,
+    eventInfos: String,
+    comments: String,
+    host: [String],
+    guest: [guestSchema],
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // Ensure that eventTitles are uppercase & not longer than 3 characters
 // eventSchema.pre('save', function(next) {
@@ -36,17 +31,4 @@ const eventSchema = new Schema({
 //   next();
 // });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-module.exports = mongoose.model('Event', eventSchema);
+module.exports = mongoose.model("Event", eventSchema);

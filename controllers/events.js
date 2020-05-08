@@ -4,13 +4,17 @@ module.exports = {
   create,
   allEvents,
   update,
+  deleteEvent,
 };
 
 async function create(req, res) {
   const emails = req.body.guest.split(",");
+  req.body.host = [req.user.email];
   req.body.guest = emails.map((i) => {
     return { email: i.trim(), status: "" };
   });
+
+  req.body.guest.push({ email: req.user.email, status: "" });
   try {
     await Event.create(req.body);
     // Use the allEvents action to return the list
@@ -27,8 +31,6 @@ async function allEvents(req, res) {
     // Default to a limit of 20 events
     // if not specified in a query string
     .limit(req.query.limit || 20);
-
-    
 
   res.json(events);
 }
@@ -48,6 +50,15 @@ async function update(req, res) {
     });
 
     // Use the allEvents action to return the list
+  } catch (err) {
+    res.json({ err });
+  }
+}
+
+async function deleteEvent(req, res) {
+  try {
+    await Event.findByIdAndDelete(req.body.eventId);
+    allEvents(req, res);
   } catch (err) {
     res.json({ err });
   }
