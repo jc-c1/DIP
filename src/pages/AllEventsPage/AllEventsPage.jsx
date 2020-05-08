@@ -149,6 +149,12 @@ class AllEventsPage extends Component {
 
       return (
         <tr style={{ "background-color": dipstatus() }}>
+          <td>{isAdmin && (
+              <DeleteButton
+                handleUpdateEvents={this.props.handleUpdateEvents}
+                id={event._id}
+              />
+            )}</td>
           <td>
             <Moment format="MMM. DD, YYYY">{dateToFormat}</Moment>
           </td>
@@ -162,12 +168,7 @@ class AllEventsPage extends Component {
 
           <td>
             {disableButton()}
-            {isAdmin && (
-              <DeleteButton
-                handleUpdateEvents={this.props.handleUpdateEvents}
-                id={event._id}
-              />
-            )}
+            
           </td>
         </tr>
       );
@@ -196,6 +197,7 @@ class AllEventsPage extends Component {
           <table className={`${styles.table} table text-info`}>
             <thead>
               <tr>
+                <th width={50}></th>
                 <th width={80}>Date</th>
                 <th width={130}>Event</th>
                 <th width={150}>Comment</th>
