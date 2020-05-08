@@ -201,7 +201,7 @@ class AllEventsPage extends Component {
                 <th width={80}>Date</th>
                 <th width={130}>Event</th>
                 <th width={150}>Comment</th>
-                <th width={100}>Status</th>
+                <th width={130}>Status</th>
               </tr>
             </thead>
             <tbody>{eventRows}</tbody>
